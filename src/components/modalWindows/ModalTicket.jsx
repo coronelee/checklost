@@ -44,7 +44,7 @@ export default function ModalTicket({ticket, setOpenedTicket}) {
         };
     }, []);
 
-  
+  //
 
   return (
     <div className={styles.wrapper}>
