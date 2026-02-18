@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function LoadApi() {
     const [paymentSystems, setPaymentSystems] = useState([]);
     const [tickets, setTickets] = useState([]);
-    const [messages, setMessages] = useState([]);
 
 
     useEffect(() => {
@@ -49,15 +48,8 @@ function LoadApi() {
         return false;
     }
 
-    const getMessages = () => {
-        axios.get('https://7cc58021f96a1497.mokky.dev/messages')
-        .then((response) => {
-            setMessages(response.data);
-        })
-    }
 
-
-    return {paymentSystems, tickets, checkAuth, getMessages};
+    return {paymentSystems, tickets, checkAuth};
 }
 
 export default LoadApi;

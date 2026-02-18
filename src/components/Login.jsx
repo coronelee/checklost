@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import styles from '../styles/Login.module.css';
-import axios from 'axios';
 export default function Login({setIsLoggedIn}) {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [setIsLoggedIn]);
 
 
    const login  = ()  =>  {

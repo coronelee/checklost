@@ -18,7 +18,7 @@ export default function ModalTicket({ticket, setOpenedTicket}) {
     
     useEffect(() => {
         getMessages(ticket.id);
-    }, []);
+    }, [ticket.id]);
 
 
     const sendMessage = () => {
