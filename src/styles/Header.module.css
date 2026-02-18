@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: center;
+  padding: 20px;
+  background-color: #fcfcfc;
+  border-bottom: 1px solid #ccc;
+  height: 35px;
+
+  div{
+    display: flex;
+    gap: 20px;
+  }
+
+   button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+      background-color: #0069d9;
+    }
+
+    &:active {
+      background-color: #0056b3;
+    }
+  }
+}

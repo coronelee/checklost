@@ -1,0 +1,104 @@
+.wrapper{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000010;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ticket{
+    padding: 20px 30px;
+    background-color: white;
+    border-radius: 12px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.closeButton{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+.chatWithPS{
+    height: 600px;
+    width: 550px; 
+    border-radius: 12px;
+    border: 1px solid #ececec;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: end;
+    align-items: center;
+    padding: 0 10px;
+    /* padding: 15px; */
+    gap: 5px;
+}
+
+.input{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    input{
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    button{
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 25px;
+    }
+}
+
+
+.chat{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow-x: hidden; 
+    scrollbar-color: #007bff #e6e6e660;
+    padding: 10px;
+    /* scrollbar-width: none; */
+    transition: all 0.2s ease-in-out;
+    div{
+        background-color: #e6e6e660;
+        color: #000000;
+        padding: 10px 25px;
+        border-radius: 8px;
+        max-width: 70%;
+        box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.6);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.userName{
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.messageText{ 
+    color: #000000;
+    font-size: 14px;
+}
+
+.messageTime{
+    color: #a0a0a0;
+    font-size: 12px;
+    text-align: end;
+}
