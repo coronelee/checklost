@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import styles from '../styles/MyTickets.module.css';
 import ModalTicket from './modalWindows/ModalTicket';
-export default function MyTickets({paymentSystems, tickets}) {
+export default function MyTickets({ paymentSystems, tickets }) {
     const [searchViaReqId, setSearchViaReqId] = useState('');
     const [searchViaUserId, setSearchViaUserId] = useState('');
     const [searchViaAmount, setSearchViaAmount] = useState('');
@@ -13,8 +13,8 @@ export default function MyTickets({paymentSystems, tickets}) {
 
     const handleFilterChange = (event) => {
         const { name, value } = event.target;
-        
-        switch(name) {
+
+        switch (name) {
             case 'searchViaReqId': setSearchViaReqId(value); break;
             case 'searchViaUserId': setSearchViaUserId(value); break;
             case 'searchViaAmount': setSearchViaAmount(value); break;
@@ -23,30 +23,30 @@ export default function MyTickets({paymentSystems, tickets}) {
         }
     };
 
-    
+
 
     useEffect(() => {
         const filtered = tickets.filter(ticket => {
-            const matchesReq = !searchViaReqId || 
+            const matchesReq = !searchViaReqId ||
                 String(ticket.orderId).toLowerCase().includes(searchViaReqId.toLowerCase());
-            
-            const matchesUser = !searchViaUserId || 
+
+            const matchesUser = !searchViaUserId ||
                 String(ticket.userId).toLowerCase().includes(searchViaUserId.toLowerCase());
-            
-            const matchesAmount = !searchViaAmount || 
+
+            const matchesAmount = !searchViaAmount ||
                 String(ticket.amount).toLowerCase().includes(searchViaAmount.toLowerCase());
-            
-            const matchesTrx = !searchViaTRXID || 
+
+            const matchesTrx = !searchViaTRXID ||
                 String(ticket.trxid).toLowerCase().includes(searchViaTRXID.toLowerCase());
-            
+
             const matchesSystem = selectedPaymentSystem === "*" || !selectedPaymentSystem ||
                 ticket.system?.name === selectedPaymentSystem;
 
             return matchesReq && matchesUser && matchesAmount && matchesTrx && matchesSystem;
         });
-        
+
         setFilteredTickets(filtered);
-    }, [tickets, searchViaReqId, searchViaUserId, searchViaAmount, searchViaTRXID, selectedPaymentSystem]); 
+    }, [tickets, searchViaReqId, searchViaUserId, searchViaAmount, searchViaTRXID, selectedPaymentSystem]);
 
     return (
         <div className={styles.wrapper}>
@@ -59,36 +59,36 @@ export default function MyTickets({paymentSystems, tickets}) {
                         </option>
                     ))}
                 </select>
-                <input 
-                    type="text" 
-                    name="searchViaReqId" 
-                    placeholder="Order ID" 
+                <input
+                    type="text"
+                    name="searchViaReqId"
+                    placeholder="Order ID"
                     value={searchViaReqId}
                     onChange={handleFilterChange}
                 />
-                <input 
-                    type="text" 
-                    name="searchViaUserId" 
-                    placeholder="User ID" 
+                <input
+                    type="text"
+                    name="searchViaUserId"
+                    placeholder="User ID"
                     value={searchViaUserId}
                     onChange={handleFilterChange}
                 />
-                <input 
-                    type="text" 
-                    name="searchViaAmount" 
-                    placeholder="Amount" 
+                <input
+                    type="text"
+                    name="searchViaAmount"
+                    placeholder="Amount"
                     value={searchViaAmount}
                     onChange={handleFilterChange}
                 />
-                <input 
-                    type="text" 
-                    name="searchViaTRXID" 
-                    placeholder="TRX ID" 
+                <input
+                    type="text"
+                    name="searchViaTRXID"
+                    placeholder="TRX ID"
                     value={searchViaTRXID}
                     onChange={handleFilterChange}
                 />
             </div>
-            
+
             <table className={styles.table}>
                 <thead>
                     <tr>
@@ -114,18 +114,18 @@ export default function MyTickets({paymentSystems, tickets}) {
                             <td>{ticket.amount}</td>
                             <td>{ticket.trxid}</td>
                             <td>{ticket.type}</td>
-                            <td styles={{color: ticket.status == 'Resolved' ? 'green' : 'red'}}>{ticket.status}</td>
+                            <td style={{ color: ticket.status === 'Resolved' ? 'green' : 'red' }}>{ticket.status}</td>
                             <td>{ticket.last_update}</td>
                             <div className={styles.actions}>
-                              {/* <button >Edit</button> */}
-                              <button onClick={() => setOpenedTicket(ticket)}>Open</button>
+                                {/* <button >Edit</button> */}
+                                <button onClick={() => setOpenedTicket(ticket)}>Open</button>
                             </div>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            {openedTicket && <ModalTicket ticket={openedTicket} setOpenedTicket={setOpenedTicket} />}
+            {openedTicket && <ModalTicket ticket={openedTicket} setOpenedTicket={setOpenedTicket} tickets={tickets} />}
         </div>
     );
 }

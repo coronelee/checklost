@@ -3,7 +3,7 @@ import styles from '../../styles/ModalTicket.module.css';
 import { IoClose, IoTrash, IoSendOutline } from "react-icons/io5";
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-export default function ModalTicket({ ticket, setOpenedTicket }) {
+export default function ModalTicket({ ticket, tickets, setOpenedTicket }) {
     const { orderId, userId, amount, trxid } = ticket;
     const [message, setMessage] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
@@ -22,7 +22,6 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
 
 
     const sendMessage = (file) => {
-
         const message = document.getElementById('sendMessage').value;
         document.getElementById('sendMessage').value = '';
 
@@ -47,7 +46,13 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
                 }).then((response) => {
                     getMessages();
                 })
+                // alert(imageId.id);
+
+
+                axios.patch(`https://7cc58021f96a1497.mokky.dev/tickets/${ticket.id}`, { images: ticket.images.concat(imageId.id) })
             }
+
+
         }
 
         if (pastedImage != null) {
@@ -116,6 +121,37 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
             getMessages();
         })
     }
+
+    const closeTicket = (id) => {
+        axios.patch(`https://7cc58021f96a1497.mokky.dev/tickets/${id}`, { status: 'Resolved' }).then((response) => { })
+        setOpenedTicket(null);
+    }
+    const [ticketImages, setTicketImages] = useState([]);
+
+    const getImages = async (id) => {
+        const arr = []
+
+        await axios.get(`https://7cc58021f96a1497.mokky.dev/tickets/${id}`).then((response) => {
+            const imgId = response.data.images;
+            if (imgId.length === 0) return;
+            for (let i = 0; i < imgId.length; i++) {
+                axios.get(`https://7cc58021f96a1497.mokky.dev/uploads/${imgId[i]}`).then((response) => {
+                    if (response.data.url === undefined) return;
+                    if (id !== ticket.id) return;
+                    if (ticket.id !== id) return;
+                    arr[i] = (response.data.url);
+                })
+            }
+            // alert(imgId);
+            setTicketImages(arr);
+        })
+    }
+
+
+    useEffect(() => {
+        getImages(ticket.id);
+    }, []);
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.ticket}>
@@ -153,12 +189,27 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
                     </div>
                 </div>
                 <div>
-                    <div className={styles.ticketInfo}>
-                        <p>Request ID: <input type="text" value={orderId} /></p>
-                        <p>User ID: <input type="text" value={userId} /></p>
-                        <p>Amount: <input type="text" value={amount} /></p>
-                        <p>TRX ID: <input type="text" value={trxid} /></p>
+                    <div className={styles.ticketInfoWrapper}>
+                        <div className={styles.ticketInfo}>
+                            <p>Request ID: <input type="text" value={orderId} /></p>
+                            <p>User ID: <input type="text" value={userId} /></p>
+                            <p>Amount: <input type="text" value={amount} /></p>
+                            <p>TRX ID: <input type="text" value={trxid} /></p>
+                            <div className={styles.imagesTicket} id='imagesTicket'>
+                                {
+                                    ticketImages?.map((image) => (
+                                        <button key={image} onClick={() => openImage(image)}>
+                                            <img style={{ width: '150px' }} src={image} alt="ticket" />
+                                        </button>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                        <div className={styles.ticketActions}>
+                            <button>Edit</button><button onClick={() => closeTicket(ticket.id)}>Close ticket</button>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
