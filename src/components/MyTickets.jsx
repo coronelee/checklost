@@ -23,15 +23,13 @@ export default function MyTickets({ paymentSystems, tickets }) {
         }
     };
 
-
-
     useEffect(() => {
         const filtered = tickets.filter(ticket => {
             const matchesReq = !searchViaReqId ||
-                String(ticket.orderId).toLowerCase().includes(searchViaReqId.toLowerCase());
+                String(ticket.orderid).toLowerCase().includes(searchViaReqId.toLowerCase());
 
             const matchesUser = !searchViaUserId ||
-                String(ticket.userId).toLowerCase().includes(searchViaUserId.toLowerCase());
+                String(ticket.userid).toLowerCase().includes(searchViaUserId.toLowerCase());
 
             const matchesAmount = !searchViaAmount ||
                 String(ticket.amount).toLowerCase().includes(searchViaAmount.toLowerCase());
@@ -108,9 +106,9 @@ export default function MyTickets({ paymentSystems, tickets }) {
                     {filteredTickets.map((ticket) => (
                         <tr key={ticket.id} className={styles.row}>
                             <td>{ticket.id}</td>
-                            <td>{ticket.system.name}</td>
-                            <td>{ticket.orderId}</td>
-                            <td>{ticket.userId}</td>
+                            <td>{ticket.system_id}</td>
+                            <td>{ticket.orderid}</td>
+                            <td>{ticket.userid}</td>
                             <td>{ticket.amount}</td>
                             <td>{ticket.trxid}</td>
                             <td>{ticket.type}</td>
