@@ -50,9 +50,10 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
                         message: message.message,
                         time: message.time,
                         user: message.user_login,
-                        files: message.files || [] // Предполагаем, что сервер возвращает файлы
+                        files: message.files // Предполагаем, что сервер возвращает файлы
                     })
                 );
+                console.log('Сообщения обновлены:', messagesArray);
                 setMessage(messagesArray);
             })
     }
@@ -86,37 +87,45 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
         document.getElementById('sendMessage').value = '';
 
         try {
-            // 1. Сначала отправляем текстовое сообщение
             const messageResponse = await api.post('/messages', {
                 message: messageText,
                 ticket_id: ticket.id,
                 user_login: user.login,
                 time: new Date().toLocaleString()
             });
+            let messageId = null;
 
-            // 2. Если есть файлы, отправляем их по одному
+            if (messageResponse.data) {
+                messageId = messageResponse.data.id ||
+                    messageResponse.data.message_id ||
+                    messageResponse.data._id ||
+                    messageResponse.data.ID;
+            }
             if (attachedFiles.length > 0) {
+
                 for (const fileObj of attachedFiles) {
                     const fileFormData = new FormData();
                     fileFormData.append('file', fileObj.file);
                     fileFormData.append('ticket_id', ticket.id);
-                    fileFormData.append('message_id', message.id);
+                    fileFormData.append('message_id', String(messageId));
 
                     try {
-                        // Используем существующий endpoint для загрузки файлов
-                        await api.post('/files/upload', fileFormData, {
+                        // Загружаем файл с привязкой к сообщению
+                        const uploadResponse = await api.post('/files/upload', fileFormData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
                         });
+
                     } catch (fileError) {
                         console.error('Ошибка загрузки файла:', fileObj.name, fileError);
+
                     }
                 }
             }
 
             // Обновляем сообщения
-            getMessages();
+            await getMessages();
 
             // Очищаем файлы
             attachedFiles.forEach(file => {
@@ -126,18 +135,25 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
             });
             setAttachedFiles([]);
 
+            // Обновляем время последнего обновления тикета
+            try {
+                await api.patch(`/tickets/${ticket.id}`, {
+                    last_update: new Date().toLocaleString()
+                });
+            } catch (error) {
+                console.error('Ошибка обновления времени тикета:', error);
+            }
+
         } catch (error) {
             console.error('Ошибка отправки сообщения:', error);
-            alert('Ошибка при отправке сообщения');
-        }
 
-        // Обновляем время последнего обновления тикета
-        try {
-            await api.patch(`/tickets/${ticket.id}`, {
-                last_update: new Date().toLocaleString()
-            });
-        } catch (error) {
-            console.error('Ошибка обновления времени тикета:', error);
+            // Дополнительная информация об ошибке
+            if (error.response) {
+                console.error('Данные ошибки:', error.response.data);
+                console.error('Статус:', error.response.status);
+            }
+
+            alert('Ошибка при отправке сообщения: ' + (error.response?.data?.message || error.message));
         }
     }
 
@@ -274,6 +290,32 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
         };
     }, []);
 
+
+    const [currentImage, setCurrentImage] = useState(null);
+    useEffect(() => {
+        if (message.length > 0) {
+            // Ищем первое сообщение с картинкой
+            const messageWithImage = message.find(msg =>
+                msg.files?.some(f => f.mime_type?.startsWith('image/'))
+            );
+
+            if (messageWithImage) {
+                const imageFile = messageWithImage.files.find(f => f.mime_type?.startsWith('image/'));
+                const imageUrl = `http://localhost:5000${imageFile.file_path}`;
+                setCurrentImage(imageUrl);
+            }
+        }
+    }, [message]);
+
+
+
+    useEffect(() => {
+
+
+
+    }, []);
+
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.ticket}>
@@ -373,30 +415,50 @@ export default function ModalTicket({ ticket, setOpenedTicket }) {
                                     <span className={styles.messageText}>{msg.message}</span>
                                 )}
 
-                                {msg.files && msg.files.length > 0 && (
+                                <div id='image' className={styles.imageBlock}>
+                                    {currentImage ? (
+                                        <img
+                                            src={currentImage}
+                                            alt="Message attachment"
+                                            className={styles.messageImage}
+                                        />
+                                    ) : (
+                                        <p>Нет изображения</p>
+                                    )}
+                                </div>
+
+                                {/* {msg.files && msg.files.length > 0 && (
                                     <div className={styles.messageFiles}>
-                                        {msg.files.map((file, fileIndex) => (
-                                            <button
-                                                key={fileIndex}
-                                                className={styles.messageFileButton}
-                                                onClick={() => openImage(file.url)}
-                                            >
-                                                {file.type?.startsWith('image/') ? (
-                                                    <img
-                                                        className={styles.messageFile}
-                                                        src={file.url}
-                                                        alt="file"
-                                                    />
-                                                ) : (
-                                                    <div className={styles.fileAttachment}>
-                                                        <IoDocument />
-                                                        <span>{file.name}</span>
-                                                    </div>
-                                                )}
-                                            </button>
-                                        ))}
+                                        {msg.files.map((file, fileIndex) => {
+                                            // Формируем правильный URL для доступа к файлу
+                                            // Предполагаем, что файлы хранятся в папке /uploads/
+                                            const fileUrl = `/uploads/${file.file_path}`; // или file.file_path, если приходит полный путь
+
+                                            return (
+                                                <button
+                                                    key={file.id || fileIndex} // Лучше использовать file.id если есть
+                                                    className={styles.messageFileButton}
+                                                    onClick={() => openImage(fileUrl)}
+                                                >
+                                                    {file.mime_type?.startsWith('image/') ? (
+                                                        <img
+                                                            className={styles.messageFile}
+                                                            src={fileUrl}
+                                                            alt={file.original_name || "file"}
+                                                        />
+                                                    ) : (
+                                                        <div className={styles.fileAttachment}>
+                                                            <IoDocument />
+                                                            <span>{file.original_name || file.filename}</span>
+                                                        </div>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
-                                )}
+                                )} */}
+
+
 
                                 <span className={styles.messageTime}>{msg.time}</span>
                             </div>
