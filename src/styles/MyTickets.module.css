@@ -13,6 +13,8 @@
   justify-content: center;
   align-items: start;
   gap: 20px;
+
+
 }
 
 .table {
@@ -27,25 +29,102 @@
 
 .filter>select,
 .filter>input {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: 12px 15px;
+  /* Увеличено для соответствия модалке */
+  border-radius: 12px;
+  /* Изменено с 4px на 12px как в модалке */
+  border: 1px solid #e0e0e0;
+  /* Более светлый цвет как в модалке */
   outline: none;
+  font-size: 15px;
+  /* Добавлен размер шрифта */
+  box-sizing: border-box;
+  /* Важно для правильной ширины */
+  height: 48px;
+  /* Фиксированная высота как в модалке */
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+  /* Плавные переходы */
+  width: auto;
+  /* или конкретная ширина, если нужно */
+  min-width: 150px;
+  /* Минимальная ширина */
 }
 
-select:focus,
-input:focus {
-  background-color: aliceblue;
-  border: 1px solid #007bff;
-}
-
-select:hover,
-input:hover {
-  border: 1px solid #007bff;
-  background-color: aliceblue;
+/* Специальные стили для select */
+.filter>select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 14px;
+  padding-right: 40px;
+  /* Место для кастомной стрелки */
   cursor: pointer;
 }
 
+/* Убираем стандартную стрелку в IE */
+.filter>select::-ms-expand {
+  display: none;
+}
+
+/* Стили при фокусе */
+select:focus,
+input:focus {
+  background-color: white;
+  /* Изменено с aliceblue на белый */
+  border: 1px solid #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  /* Добавлено свечение как в модалке */
+}
+
+/* Стили при наведении */
+select:hover,
+input:hover {
+  border: 1px solid #007bff;
+  background-color: white;
+  /* Изменено с aliceblue на белый */
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+  /* Добавлена тень */
+}
+
+/* Стили для placeholder */
+.filter>input::placeholder {
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* Если фильтры расположены в ряд */
+.filter {
+  display: flex;
+  gap: 12px;
+  /* Расстояние между элементами */
+  flex-wrap: wrap;
+  /* Перенос на следующую строку */
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  border: 1px solid #eaeaea;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter>select,
+  .filter>input {
+    width: 100%;
+    min-width: auto;
+  }
+}
 
 .table {
   width: 100%;
@@ -119,4 +198,20 @@ input:hover {
       background-color: #0056b3;
     }
   }
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.sortable:hover {
+  background-color: #f0f0f0;
+}
+
+th {
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
 }

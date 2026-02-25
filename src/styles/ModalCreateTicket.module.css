@@ -1,0 +1,440 @@
+.wrapper {
+    position: fixed;
+    /* Изменено с absolute на fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0000005e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Добавлен z-index */
+}
+
+.formTicket {
+    width: 500px;
+    max-width: 90%;
+    /* Для мобильных устройств */
+    padding: 30px;
+    /* Увеличено для лучшего вида */
+    background-color: rgb(250, 250, 250);
+    border-radius: 16px;
+    /* Немного увеличено */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    /* Увеличено для лучшего разделения */
+    position: relative;
+    animation: ticket 0.2s ease-in-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* Добавлена тень */
+}
+
+/* Общие стили для всех полей ввода и select */
+.formTicket input,
+.formTicket select {
+    width: 100%;
+    padding: 12px 15px;
+    /* Увеличено для лучшего UX */
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    outline: none;
+    font-size: 15px;
+    /* Добавлен размер шрифта */
+    box-sizing: border-box;
+    /* КЛЮЧЕВОЙ МОМЕНТ - включает padding в ширину */
+    height: 48px;
+    /* Фиксированная высота для одинакового размера */
+    background-color: white;
+    /* Явно задаем фон */
+    transition: all 0.2s ease;
+    /* Плавные переходы */
+}
+
+/* Специальные стили для select */
+.formTicket select {
+    appearance: none;
+    /* Убираем стандартную стрелку */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+    padding-right: 40px;
+    /* Место для кастомной стрелки */
+    cursor: pointer;
+}
+
+/* Убираем стандартную стрелку в IE */
+.formTicket select::-ms-expand {
+    display: none;
+}
+
+/* Стили при фокусе */
+.formTicket input:focus,
+.formTicket select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    /* Добавлен эффект фокуса */
+}
+
+/* Стили для группы полей (если нужно) */
+.formGroup {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #444;
+    font-size: 14px;
+}
+
+/* Кнопка создания */
+.formTicket .createButton {
+    width: 100%;
+    /* Сделаем кнопку на всю ширину */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    /* Согласовано с input */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    /* Отступ сверху */
+}
+
+.formTicket .createButton:hover {
+    background-color: #0056b3;
+}
+
+.formTicket .createButton:active {
+    transform: translateY(1px);
+    /* Эффект нажатия */
+}
+
+/* Блок с файлами */
+.formTicket .files {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    overflow-y: auto;
+    /* Изменено с scroll на auto */
+    padding: 15px;
+    background-color: #f5f5f5;
+    /* Более светлый фон */
+    box-sizing: border-box;
+    /* Важно для правильной ширины */
+}
+
+/* Стили для файлов внутри блока */
+.fileItem {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Кнопка закрытия */
+.closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* Круглая форма */
+    transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.closeButton svg {
+    width: 24px;
+    height: 24px;
+    color: #666;
+}
+
+.closeButton:hover svg {
+    color: #000;
+}
+
+/* Анимация */
+@keyframes ticket {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Стили для заголовка формы */
+.formTicket h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    width: 100%;
+}
+
+/* Дополнительные стили для текста */
+.formTicket p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Стили для сообщений об ошибках */
+.errorMessage {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+    width: 100%;
+    text-align: left;
+}
+
+.required::placeholder {
+    color: #999;
+}
+
+.required:invalid {
+    border-color: #ff4444;
+}
+
+.required:valid {
+    border-color: #00C851;
+}
+
+/* Подсветка пустых обязательных полей при попытке отправки */
+.formTicket.invalid input:invalid,
+.formTicket.invalid select:invalid {
+    border-color: #ff4444;
+    background-color: #fff5f5;
+}
+
+.close {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    p {
+        font-size: 20px;
+    }
+
+    input {
+        height: 20px;
+        width: 10%;
+    }
+}
+
+.dropZone {
+    width: 100%;
+    min-height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.dropZone:hover {
+    border-color: #007bff;
+    background-color: #f0f7ff;
+}
+
+.dropZone.dragging {
+    border-color: #28a745;
+    background-color: #f0fff4;
+    transform: scale(1.02);
+}
+
+.dropZoneContent {
+    text-align: center;
+    color: #666;
+}
+
+.dropZoneContent p {
+    margin: 5px 0;
+}
+
+.dropZoneContent .pasteHint {
+    font-size: 12px;
+    color: #999;
+    font-style: italic;
+}
+
+.dropZoneContent .fileTypes {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 10px;
+}
+
+.filesPreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.filePreviewItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    position: relative;
+    min-width: 200px;
+    max-width: 100%;
+    animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filePreviewImage {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.fileIcon {
+    font-size: 24px;
+    color: #666;
+}
+
+.fileInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.fileName {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.fileSize {
+    font-size: 10px;
+    color: #888;
+}
+
+.removeFileBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff4444;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.removeFileBtn:hover {
+    background-color: #ffebee;
+    transform: scale(1.1);
+}
+
+.formGroup {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.required {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    outline: none;
+    font-size: 15px;
+    box-sizing: border-box;
+    height: 48px;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.required.error {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.required.error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.errorMessage {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    margin-left: 5px;
+    display: block;
+}
+
+.dropZone.error {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}

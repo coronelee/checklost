@@ -6,28 +6,54 @@ import React from 'react';
 import './App.css';
 import MyTickets from './components/MyTickets';
 import LoadApi from './components/LoadApi.js';
+
 function App() {
-  const paymentSystems = LoadApi().paymentSystems;
-  const tickets = LoadApi().tickets; 
+  const { paymentSystems, tickets, loading, refreshData } = LoadApi(); // 👈 Получаем refreshData
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isSelectedPage, setIsSelectedPage] = React.useState("myTickets");
+  const [isCreateTicketPage, setIsCreateTicketPage] = React.useState(false);
+
+  // Проверяем токен при загрузке
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Если данные загружаются и пользователь авторизован, показываем загрузку
+  if (loading && isLoggedIn) {
+    return <div>Загрузка данных...</div>;
+  }
+
   return (
     <div className="App">
       {isLoggedIn && (
-          <Header setIsSelectedPage={setIsSelectedPage} isSelectedPage={isSelectedPage}/>
+        <Header
+          setIsSelectedPage={setIsSelectedPage}
+          setIsCreateTicketPage={setIsCreateTicketPage}
+          isSelectedPage={isSelectedPage}
+        />
       )}
-        <div className='wrapper'>
-          {isSelectedPage === 'myTickets' && isLoggedIn  && <MyTickets paymentSystems={paymentSystems} tickets={tickets} />} 
-          {isSelectedPage === 'createTicket' && <CreateTicket paymentSystems={paymentSystems} tickets={tickets} />}
-          {isSelectedPage === 'checkWallet' && <CheckWallet paymentSystems={paymentSystems}  tickets={tickets} />}
-          {!isLoggedIn && <Login setIsLoggedIn={setIsLoggedIn} />}
-        </div>
-        {/* {tickets.map((ticket) => (
-          <li key={ticket.id}>{ticket.system.name}</li>
-        ))} */}
-       {/* {paymentSystems.map((paymentSystem) => (<p>{paymentSystem.name}</p>))} */}
+      <div className='wrapper'>
+        {isSelectedPage === 'myTickets' && isLoggedIn && (
+          <MyTickets
+            setIsCreateTicketPage={setIsCreateTicketPage}
+            isCreateTicketPage={isCreateTicketPage}
+            paymentSystems={paymentSystems}
+            tickets={tickets}
+            refreshTickets={refreshData} // 👈 Передаем функцию обновления
+          />
+        )}
+        {isSelectedPage === 'checkWallet' && (
+          <CheckWallet
+            paymentSystems={paymentSystems}
+            tickets={tickets}
+          />
+        )}
+        {!isLoggedIn && <Login setIsLoggedIn={setIsLoggedIn} />}
+      </div>
     </div>
-    
   );
 }
 

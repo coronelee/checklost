@@ -1,4 +1,7 @@
-html, body {
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -10,8 +13,17 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.wrapper{
+.wrapper {
   display: flex;
-  width: 100%; 
+  width: 100%;
   height: calc(100vh - 76px);
+}
+
+* {
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight: <weight>; */
+  font-style: normal;
+  font-variation-settings:
+    "GRAD" 0;
 }

@@ -1,5 +1,5 @@
 .wrapper {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -8,356 +8,139 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
-
-
 .ticket {
-    padding: 20px 30px;
+    width: 1200px;
+    max-width: 95vw;
+    height: 800px;
+    max-height: 90vh;
     background-color: rgb(250, 250, 250);
-    border-radius: 12px;
+    border-radius: 16px;
     display: flex;
-    justify-content: center;
-    gap: 10px;
     position: relative;
     animation: ticket 0.2s ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .closeButton {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     cursor: pointer;
     border: none;
     background-color: transparent;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
 }
 
+.closeButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.closeButton svg {
+    width: 24px;
+    height: 24px;
+    color: #666;
+}
+
+/* Левая часть - чат */
 .chatWithPS {
-    height: 70vh;
-    width: 60vw;
-    border-radius: 12px;
-    border: 1px solid #dfdfdf;
+    flex: 2;
+    height: 100%;
+    border-right: 1px solid #e0e0e0;
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: end;
-    align-items: center;
-    padding: 0 10px;
-    padding-bottom: 10px;
-    gap: 5px;
-}
-
-.input {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-    }
-
-    button {
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        font-size: 25px;
-    }
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .chat {
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    overflow-x: hidden;
+    gap: 16px;
+    overflow-y: auto;
+    padding: 20px;
     scrollbar-color: #007bff #e6e6e660;
     scrollbar-width: thin;
-    padding: 10px;
-    transition: all 0.2s ease-in-out;
+}
 
-    div {
-        background-color: #e6e6e660;
-        color: #000000;
-        padding: 10px 25px;
-        border-radius: 8px;
-        max-width: 70%;
-        box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.6);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+.chat>div {
+    background-color: #f0f2f5;
+    color: #000000;
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 70%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: messageAppear 0.2s ease;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
 
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .headerMsg {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-
-    button {
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        font-size: 20px;
-    }
+    justify-content: space-between;
+    gap: 12px;
 }
 
-.userName {
-    color: #000000;
+.headerMsg span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.headerMsg button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
     font-size: 16px;
-    font-weight: bold;
+    color: #ff4444;
+    opacity: 0.7;
+    transition: all 0.2s;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.headerMsg button:hover {
+    opacity: 1;
+    background-color: rgba(255, 68, 68, 0.1);
 }
 
 .messageText {
-    color: #000000;
     font-size: 14px;
-}
-
-.messageImage {
-    max-width: 250px;
-    max-height: 550px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.6);
-}
-
-.messageImageButton {
-    border: none;
-    background-color: transparent;
-
-    &:hover {
-        cursor: pointer;
-    }
+    line-height: 1.5;
+    word-break: break-word;
 }
 
 .messageTime {
-    color: #a0a0a0;
-    font-size: 12px;
-    text-align: end;
+    color: #999;
+    font-size: 11px;
+    text-align: right;
+    margin-top: 4px;
 }
 
-
-.textarea {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    height: 200px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #ececec;
-}
-
-.ticketInfo {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    p {
-        margin: 0;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    input {
-        padding: 10px;
-        border-radius: 12px;
-        border: 1px solid #e0e0e0;
-        outline: none;
-    }
-}
-
-.prewiewImage {
-    position: absolute;
-    bottom: 80px;
-    left: 40px;
-    z-index: 1;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-    }
-
-    img {
-        object-fit: cover;
-        background-repeat: no-repeat;
-
-        max-height: 500px;
-        max-width: 700px;
-    }
-}
-
-.ticketInfoWrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ticketActions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.2s ease-in-out;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-
-        &:hover {
-            background-color: #0069d9;
-        }
-
-        &:active {
-            background-color: #0056b3;
-        }
-    }
-}
-
-.imagesTicket {
-    width: 100%;
-    height: 300px;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #ececec;
-
-    /* background: #888888; */
-}
-
-
-/* ModalTicket.module.css */
-
-.filesPreview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    position: absolute;
-    bottom: 80px;
-    left: 40px;
-    z-index: 1;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.6);
-    max-width: 680px;
-}
-
-.filePreviewItem {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    position: relative;
-    min-width: 200px;
-}
-
-.filePreviewImage {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.fileIcon {
-    font-size: 24px;
-    color: #666;
-}
-
-.fileInfo {
-    flex: 1;
-    overflow: hidden;
-}
-
-.fileName {
-    display: block;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.fileSize {
-    font-size: 10px;
-    color: #888;
-}
-
-.removeFileBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #ff4444;
-    padding: 4px;
-}
-
-.inputContainer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-}
-
-.attachButton {
-    padding: 8px;
-    background: #f0f0f0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.attachButton:hover {
-    background: #e0e0e0;
-}
-
-.sendButton {
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-}
-
-.sendButton:hover {
-    color: #0056b3;
-}
-
+/* Стили для файлов в сообщениях */
 .messageFiles {
     display: flex;
     flex-wrap: wrap;
@@ -370,42 +153,722 @@
     background: none;
     padding: 0;
     cursor: pointer;
+    max-width: 150px;
+    transition: transform 0.2s;
+}
+
+.messageFileButton:hover {
+    transform: scale(1.05);
 }
 
 .messageFile {
-    max-width: 200px;
-    max-height: 200px;
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
     border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.messageFileContainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
 }
 
 .fileAttachment {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.fileAttachment svg {
+    width: 30px;
+    height: 30px;
+    color: #666;
+}
+
+.fileAttachment span {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    word-break: break-word;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Область ввода */
+.input {
+    padding: 16px 20px;
+    background-color: white;
+    border-top: 1px solid #e0e0e0;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.inputContainer input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 24px;
+    border: 1px solid #e0e0e0;
+    outline: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.inputContainer input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.attachButton {
+    padding: 10px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.attachButton:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.sendButton {
+    padding: 10px;
+    background: #007bff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.2s;
+}
+
+.sendButton:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.sendButton svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Превью файлов */
+.filesPreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.filePreviewItem {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px;
-    background: #f0f0f0;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    position: relative;
+    min-width: 180px;
+    animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.filePreviewImage {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
     border-radius: 4px;
 }
 
+.fileIcon {
+    font-size: 20px;
+    color: #666;
+}
 
+.fileName {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
+.removeFileBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff4444;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-left: 4px;
+}
 
+.removeFileBtn:hover {
+    background-color: #ffebee;
+    transform: scale(1.1);
+}
 
+/* Правая часть - информация о тикете */
+.ticketInfoWrapper {
+    width: 350px;
+    background-color: #f8f9fa;
+    border-left: 1px solid #e0e0e0;
+    overflow-y: auto;
+    padding: 24px;
+}
 
+.ticketInfo {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
+.ticketInfo h3 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
 
+.infoGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
 
+.infoGrid p {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+    font-size: 14px;
+}
 
+.infoGrid p strong {
+    color: #666;
+    font-weight: 500;
+}
 
+/* Режим редактирования */
+.ticketInfo input,
+.ticketInfo select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    width: 160px;
+    outline: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
 
+.ticketInfo input:focus,
+.ticketInfo select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.ticketInfo select {
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Стили для файлов тикета */
+.ticketFiles {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.ticketFiles h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.filesGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.filesGrid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.filesGrid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.filesGrid::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.filesGrid::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+.ticketFileItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ticketFileItem:hover {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.ticketFileImage {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+.ticketFileImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ticketFileIcon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.ticketFileIcon svg {
+    width: 28px;
+    height: 28px;
+    color: #666;
+}
+
+.ticketFileInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.ticketFileName {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.ticketFileSize {
+    font-size: 11px;
+    color: #888;
+}
+
+/* Кнопки действий */
+.ticketActions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid #eaeaea;
+}
+
+.ticketActions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ticketActions button:first-child {
+    background-color: #007bff;
+    color: white;
+}
+
+.ticketActions button:first-child:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.ticketActions button:last-child {
+    background-color: #28a745;
+    color: white;
+}
+
+.ticketActions button:last-child:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.ticketActions button:active {
+    transform: translateY(0);
+}
+
+/* Стили для формы редактирования */
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.editField {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.editField label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.editField input,
+.editField select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.editField input:focus,
+.editField select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.editActions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.saveButton {
+    flex: 1;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saveButton:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.cancelButton {
+    flex: 1;
+    padding: 12px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Модалка для просмотра файлов */
+.fileViewerOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease;
+}
+
+.fileViewerModal {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: scaleIn 0.2s ease;
+}
+
+.fileViewerClose {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.fileViewerClose:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.fileViewerContent {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+.fileViewerImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.fileViewerVideo {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.fileViewerAudio {
+    width: 80%;
+    max-width: 500px;
+}
+
+.fileViewerDocument {
+    text-align: center;
+    color: white;
+}
+
+.fileViewerDocument svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.fileViewerDocument p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.downloadButton {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    transition: all 0.2s;
+}
+
+.downloadButton:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.fileViewerNav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.fileViewerNav:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.fileViewerPrev {
+    left: 20px;
+}
+
+.fileViewerNext {
+    right: 20px;
+}
+
+.fileViewerInfo {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    margin: 0 20px;
+    border-radius: 8px;
+}
+
+/* Анимации */
 @keyframes ticket {
     from {
-        opacity: 0.5;
-        transform: scale(.8);
+        opacity: 0;
+        transform: scale(0.9);
     }
 
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .ticket {
+        flex-direction: column;
+        height: 95vh;
+    }
+
+    .chatWithPS {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .ticketInfoWrapper {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
     }
 }
