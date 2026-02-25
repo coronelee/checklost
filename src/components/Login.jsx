@@ -16,7 +16,7 @@ export default function Login({ setIsLoggedIn }) {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post('http://45.80.128.27:5000/api/auth/login', {
         login: user.login,
         password: user.password
       });
