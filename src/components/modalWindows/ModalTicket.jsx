@@ -59,10 +59,11 @@ export default function ModalTicket({ ticket, setOpenedTicket, onTicketUpdated, 
                         message: msg.message,
                         time: msg.time,
                         user: msg.user_login,
-                        files: msg.files || []
+                        files: msg.files || [] // ВАЖНО: сохраняем файлы из ответа
                     })
                 );
                 setMessages(messagesArray);
+                console.log('Сообщения с файлами:', messagesArray); // для отладки
             })
             .catch((error) => {
                 console.error(error);
@@ -128,23 +129,23 @@ export default function ModalTicket({ ticket, setOpenedTicket, onTicketUpdated, 
             return file.file_path;
         }
         else if (file.file_path?.startsWith('/uploads')) {
-            return `http://localhost:5000${file.file_path}`;
+            return `http://45.80.128.27:5000${file.file_path}`;
         }
         else if (file.file_path) {
             const normalizedPath = file.file_path.replace(/\\/g, '/');
             const uploadsIndex = normalizedPath.indexOf('uploads/');
             if (uploadsIndex !== -1) {
                 const relativePath = normalizedPath.substring(uploadsIndex);
-                return `http://localhost:5000/${relativePath}`;
+                return `http://45.80.128.27:5000/${relativePath}`;
             } else {
-                return `http://localhost:5000/uploads/${file.filename || file.original_name}`;
+                return `http://45.80.128.27:5000/uploads/${file.filename || file.original_name}`;
             }
         }
         else if (file.filename) {
-            return `http://localhost:5000/uploads/${file.filename}`;
+            return `http://45.80.128.27:5000/uploads/${file.filename}`;
         }
         else if (file.original_name) {
-            return `http://localhost:5000/uploads/${file.original_name}`;
+            return `http://45.80.128.27:5000/uploads/${file.original_name}`;
         }
 
         return '';
