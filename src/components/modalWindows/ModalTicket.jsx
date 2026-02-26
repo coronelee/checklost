@@ -31,7 +31,7 @@ export default function ModalTicket({ ticket, setOpenedTicket, onTicketUpdated, 
     });
 
     const api = axios.create({
-        baseURL: 'http://45.80.128.27:5000/api',
+        baseURL: 'http://38.101.3.71:5000/api',
         headers: {
             'Content-Type': 'application/json',
         }
@@ -129,23 +129,23 @@ export default function ModalTicket({ ticket, setOpenedTicket, onTicketUpdated, 
             return file.file_path;
         }
         else if (file.file_path?.startsWith('/uploads')) {
-            return `http://45.80.128.27:5000${file.file_path}`;
+            return `http://38.101.3.71:5000${file.file_path}`;
         }
         else if (file.file_path) {
             const normalizedPath = file.file_path.replace(/\\/g, '/');
             const uploadsIndex = normalizedPath.indexOf('uploads/');
             if (uploadsIndex !== -1) {
                 const relativePath = normalizedPath.substring(uploadsIndex);
-                return `http://45.80.128.27:5000/${relativePath}`;
+                return `http://38.101.3.71:5000/${relativePath}`;
             } else {
-                return `http://45.80.128.27:5000/uploads/${file.filename || file.original_name}`;
+                return `http://38.101.3.71:5000/uploads/${file.filename || file.original_name}`;
             }
         }
         else if (file.filename) {
-            return `http://45.80.128.27:5000/uploads/${file.filename}`;
+            return `http://38.101.3.71:5000/uploads/${file.filename}`;
         }
         else if (file.original_name) {
-            return `http://45.80.128.27:5000/uploads/${file.original_name}`;
+            return `http://38.101.3.71:5000/uploads/${file.original_name}`;
         }
 
         return '';

@@ -7,7 +7,7 @@ function LoadApi() {
     const [loading, setLoading] = useState(true);
 
     const api = axios.create({
-        baseURL: 'http://45.80.128.27:5000/api',
+        baseURL: 'http://38.101.3.71:5000/api',
         headers: {
             'Content-Type': 'application/json',
         }

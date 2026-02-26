@@ -7,7 +7,6 @@ export default function Header({ setIsSelectedPage, setIsCreateTicketPage }) {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userType = user?.type;
 
-  console.log('👤 Header - тип пользователя:', userType);
 
   return (
     <div className={headerStyles.header}>
@@ -23,9 +22,9 @@ export default function Header({ setIsSelectedPage, setIsCreateTicketPage }) {
           </button>
         )}
 
-        <button onClick={() => setIsSelectedPage("checkWallet")}>
+        {/* <button onClick={() => setIsSelectedPage("checkWallet")}>
           Check wallet
-        </button>
+        </button> */}
       </div>
       <div>
         <button onClick={() => {
