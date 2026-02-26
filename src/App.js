@@ -1,6 +1,4 @@
 import Header from './components/Header';
-import CreateTicket from './components/CreateTicket';
-import CheckWallet from './components/CheckWallet';
 import Login from './components/Login';
 import React from 'react';
 import './App.css';
@@ -43,12 +41,6 @@ function App() {
             paymentSystems={paymentSystems}
             tickets={tickets}
             refreshTickets={refreshData} // 👈 Передаем функцию обновления
-          />
-        )}
-        {isSelectedPage === 'checkWallet' && (
-          <CheckWallet
-            paymentSystems={paymentSystems}
-            tickets={tickets}
           />
         )}
         {!isLoggedIn && <Login setIsLoggedIn={setIsLoggedIn} />}
